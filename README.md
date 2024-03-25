@@ -1,2 +1,2 @@
 # RapidAuto-Server
-Servidor Web de RaídAuto
+Servidor Web de RapidAuto
