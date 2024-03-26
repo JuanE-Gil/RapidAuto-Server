@@ -3,6 +3,7 @@ package com.example.demo.Controller;
 
 import com.example.demo.DTO.RespuestaDTO;
 import com.example.demo.DTO.UsuarioDTO;
+import com.example.demo.DTO.Usuario_ActualizarDTO;
 import com.example.demo.Service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,24 +79,36 @@ public class UsuarioController {
 
     @PostMapping("/registrar_admin")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<RespuestaDTO> registrar_admin(@Valid @ModelAttribute UsuarioDTO dto) throws  Exception{
-        RespuestaDTO respuesta = new RespuestaDTO("OK","Registrado Correctamente", usuarioService.registrar_admin(dto));
-        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    public ResponseEntity<String> registrar_admin(@Valid @ModelAttribute UsuarioDTO dto) throws  Exception{
+        String mensaje = usuarioService.registrar_admin(dto);
+        if (mensaje.equals("Usuario Registrado Correctamente")) {
+            return ResponseEntity.ok(mensaje);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensaje);
+        }
     }
 
     @PutMapping("/actualizar_usuario")
     @PreAuthorize("hasRole('USUARIO')")
-    public ResponseEntity<RespuestaDTO> actualizar(@Valid @ModelAttribute UsuarioDTO dto, Principal principal) throws  Exception{
-        Integer userId = usuarioService.obtenerUserIdDesdePrincipal(principal);
-        RespuestaDTO respuesta = new RespuestaDTO("OK","Actualizado Correctamente", usuarioService.actualizar(dto,userId));
-        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    public ResponseEntity<String> actualizar(@Valid @ModelAttribute Usuario_ActualizarDTO dto, Principal principal) throws  Exception{
+        Integer idusuario = usuarioService.obtenerUserIdDesdePrincipal(principal);
+        String mensaje = usuarioService.actualizar(dto,idusuario);
+        if (mensaje.equals("Usuario Actualizado Correctamente")) {
+            return ResponseEntity.ok(mensaje);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensaje);
+        }
     }
 
     @PutMapping("/actualizar_admin")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<RespuestaDTO> actualizar_Admin(@ModelAttribute UsuarioDTO dto, @RequestParam Integer usuario) throws  Exception{
-        RespuestaDTO respuesta = new RespuestaDTO("OK","Actualizado Correctamente", usuarioService.actualizar_admin(dto,usuario));
-        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    public ResponseEntity<String> actualizar_Admin(@Valid @ModelAttribute Usuario_ActualizarDTO dto, @RequestParam Integer usuario) throws  Exception{
+        String mensaje = usuarioService.actualizar_admin(dto,usuario);
+        if (mensaje.equals("Usuario Actualizado Correctamente")) {
+            return ResponseEntity.ok(mensaje);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensaje);
+        }
     }
 
     @DeleteMapping("/eliminar_usuario")
