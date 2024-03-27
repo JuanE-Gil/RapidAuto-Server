@@ -50,7 +50,6 @@ public class UsuarioService {
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
         return usuario.getIdRol().getDescripcion();
     }
-
     public List<UsuarioEntity> listar_solo_usuarios()throws Exception{
         String rol = "USUARIO";
         Integer idrol = rolService.buscarRol(rol);
@@ -61,75 +60,31 @@ public class UsuarioService {
         Integer idrol = rolService.buscarRol(rol);
         return  usuarioRepository.findByIdRol(new RolEntity(idrol));
     }
-
     @Transactional(rollbackOn = Exception.class )
     public String registrar_admin(UsuarioDTO dto)throws Exception{
-
         UsuarioEntity usuarioEntity = new UsuarioEntity();
-        String username = dto.getUsername();
-        String correo_electronico = dto.getCorreo_electronico();
-
-        Optional<UsuarioEntity> usuario = (usuarioRepository.findByUsername(username));
-        Optional <UsuarioEntity>  correo = (usuarioRepository.findByCorreoElectronico(correo_electronico));
-
-        if (usuario.isPresent()){
-            return ("Username em uso");
-        }else {
-            usuarioEntity.setUsername(dto.getUsername());
-        }
-
-        usuarioEntity.setNombre(dto.getNombre());
-        usuarioEntity.setApellido_Paterno(dto.getApellido_Paterno());
-        usuarioEntity.setApellido_Materno(dto.getApellido_Materno());
-
-        if (correo.isPresent()){
-            return ("Correo electronico em uso");
-        }else {
-            usuarioEntity.setCorreoElectronico(dto.getCorreo_electronico());
-        }
-
-        usuarioEntity.setContrasena(passwordEncoder.encode(dto.getContrasena()));
-        usuarioEntity.setCelular(dto.getCelular());
-        usuarioEntity.setPais("Perú");
-        usuarioEntity.setEstado("Activo");
-
-        if (dto.getImg() != null) {
-
-            byte[] img = imageCompressor.compressImage(dto.getImg().getBytes());
-            usuarioEntity.setImg(img);
-
-        } else {
-            usuarioEntity.setImg(null);
-        }
-
+        usuarioEntity = registrar(dto);
         usuarioEntity.setIdRol(new RolEntity(dto.getIdrol()));
-
         usuarioRepository.save(usuarioEntity);
         return "Usuario Registrado Correctamente";
     }
 
-    @Transactional(rollbackOn = Exception.class )
-    public String registrar_usuario(UsuarioDTO dto)throws Exception{
-
+    public UsuarioEntity registrar(UsuarioDTO dto)throws Exception{
         UsuarioEntity usuarioEntity = new UsuarioEntity();
         String username = dto.getUsername();
         String correo_electronico = dto.getCorreo_electronico();
-
         Optional<UsuarioEntity> usuario = (usuarioRepository.findByUsername(username));
         Optional <UsuarioEntity>  correo = (usuarioRepository.findByCorreoElectronico(correo_electronico));
-
         if (usuario.isPresent()){
-            return ("Username em uso");
+            throw new RegistroExistenteException();
         }else {
             usuarioEntity.setUsername(dto.getUsername());
         }
-
         usuarioEntity.setNombre(dto.getNombre());
         usuarioEntity.setApellido_Paterno(dto.getApellido_Paterno());
         usuarioEntity.setApellido_Materno(dto.getApellido_Materno());
-
         if (correo.isPresent()){
-            return ("Correo electronico em uso");
+            throw new RegistroExistenteException("Correo electrónico en uso");
         }else {
             usuarioEntity.setCorreoElectronico(dto.getCorreo_electronico());
         }
@@ -137,7 +92,6 @@ public class UsuarioService {
         usuarioEntity.setCelular(dto.getCelular());
         usuarioEntity.setPais("Perú");
         usuarioEntity.setEstado("Activo");
-
         if (dto.getImg() != null) {
 
             byte[] img = imageCompressor.compressImage(dto.getImg().getBytes());
@@ -146,66 +100,65 @@ public class UsuarioService {
         } else {
             usuarioEntity.setImg(null);
         }
+        return usuarioEntity;
+    }
 
+    @Transactional(rollbackOn = Exception.class )
+    public String registrar_usuario(UsuarioDTO dto)throws Exception{
+        UsuarioEntity usuarioEntity = new UsuarioEntity();
+        usuarioEntity = registrar(dto);
         usuarioEntity.setIdRol(new RolEntity(3));
-
         usuarioRepository.save(usuarioEntity);
         return "Usuario Registrado Correctamente";
     }
 
     @Transactional(rollbackOn =  Exception.class)
-    public String actualizar(Usuario_ActualizarDTO dto, Integer idusuario)throws Exception{
+    public String actualizar_usuario(Usuario_ActualizarDTO dto, Integer idusuario)throws Exception{
+        Optional<UsuarioEntity> optional = usuarioRepository.findById(idusuario);
+        if (optional.isPresent()){
+            UsuarioEntity usuarioEntity = optional.get();
+            usuarioEntity = actualizar(dto,idusuario);
+            usuarioEntity.setEstado("Activo");
+            usuarioEntity.setIdRol(new RolEntity(3));
+            usuarioRepository.save(usuarioEntity);
+            return "Usuario Actualizado Correctamente";
+
+        }else {
+            return "Usuario no encontrado";
+        }
+    }
+
+
+    public UsuarioEntity actualizar(Usuario_ActualizarDTO dto,Integer idusuario)throws Exception{
         Optional<UsuarioEntity> optional = usuarioRepository.findById(idusuario);
         if (optional.isPresent()){
             UsuarioEntity usuarioEntity = optional.get();
             usuarioEntity.setNombre(dto.getNombre());
             usuarioEntity.setApellido_Paterno(dto.getApellido_Paterno());
             usuarioEntity.setApellido_Materno(dto.getApellido_Materno());
-
-
             if (dto.getCorreo_electronico().equals(usuarioEntity.getCorreoElectronico()) || !Correo_si_esta_presente(dto.getCorreo_electronico())) {
                 usuarioEntity.setCorreoElectronico(dto.getCorreo_electronico());
             } else {
-                return "Correo electrónico en uso";
+                throw new RegistroExistenteException("Correo electrónico en uso");
             }
-
             usuarioEntity.setContrasena(passwordEncoder.encode(dto.getContrasena()));
             usuarioEntity.setCelular(dto.getCelular());
             usuarioEntity.setPais("Perú");
-            usuarioEntity.setEstado("Activo");
-            usuarioEntity.setImg(dto.getImg().getBytes());
-            usuarioEntity.setIdRol(new RolEntity(3));
-
-            usuarioRepository.save(usuarioEntity);
-            return "Usuario Actualizado Correctamente";
-
+            byte[] img = imageCompressor.compressImage(dto.getImg().getBytes());
+            usuarioEntity.setImg(img);
+            return usuarioEntity;
         }else {
             return null;
         }
     }
 
-
     @Transactional(rollbackOn = Exception.class)
     public String actualizar_admin(Usuario_ActualizarDTO dto, Integer idusuario) throws Exception {
         Optional<UsuarioEntity> optional = usuarioRepository.findById(idusuario);
-
         if (optional.isPresent()) {
             UsuarioEntity usuarioEntity = optional.get();
-            usuarioEntity.setNombre(dto.getNombre());
-            usuarioEntity.setApellido_Paterno(dto.getApellido_Paterno());
-            usuarioEntity.setApellido_Materno(dto.getApellido_Materno());
-
-            if (dto.getCorreo_electronico().equals(usuarioEntity.getCorreoElectronico()) || !Correo_si_esta_presente(dto.getCorreo_electronico())) {
-                usuarioEntity.setCorreoElectronico(dto.getCorreo_electronico());
-            } else {
-                return "Correo electrónico en uso";
-            }
-
-            usuarioEntity.setContrasena(passwordEncoder.encode(dto.getContrasena()));
-            usuarioEntity.setCelular(dto.getCelular());
-            usuarioEntity.setPais("Perú");
+            usuarioEntity = actualizar(dto,idusuario);
             usuarioEntity.setEstado(dto.getEstado());
-            usuarioEntity.setImg(dto.getImg().getBytes());
             usuarioEntity.setIdRol(new RolEntity(dto.getIdrol()));
 
             usuarioRepository.save(usuarioEntity);
@@ -231,12 +184,6 @@ public class UsuarioService {
         return usuario.getId_usuario();
     }
 
-    public String obtenercorreo(Integer id)throws Exception{
-        UsuarioEntity usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
-        return usuario.getCorreoElectronico();
-    }
-
     public boolean Correo_si_esta_presente(String correo){
         Optional <UsuarioEntity>  correo_en_uso = (usuarioRepository.findByCorreoElectronico(correo));
         if(correo_en_uso.isPresent()){
@@ -245,5 +192,7 @@ public class UsuarioService {
             return false;
         }
     }
+
+
 
 }
