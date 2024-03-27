@@ -32,6 +32,10 @@ public class UsuarioService {
     private RolService rolService;
 
 
+    @Autowired
+    private ImageCompressor imageCompressor;
+
+
     public List<UsuarioEntity> listar() throws Exception{
         return usuarioRepository.findAll();
     }
@@ -88,11 +92,16 @@ public class UsuarioService {
         usuarioEntity.setCelular(dto.getCelular());
         usuarioEntity.setPais("Perú");
         usuarioEntity.setEstado("Activo");
+
         if (dto.getImg() != null) {
-            usuarioEntity.setImg(dto.getImg().getBytes());
+
+            byte[] img = imageCompressor.compressImage(dto.getImg().getBytes());
+            usuarioEntity.setImg(img);
+
         } else {
             usuarioEntity.setImg(null);
         }
+
         usuarioEntity.setIdRol(new RolEntity(dto.getIdrol()));
 
         usuarioRepository.save(usuarioEntity);
@@ -128,11 +137,16 @@ public class UsuarioService {
         usuarioEntity.setCelular(dto.getCelular());
         usuarioEntity.setPais("Perú");
         usuarioEntity.setEstado("Activo");
+
         if (dto.getImg() != null) {
-            usuarioEntity.setImg(dto.getImg().getBytes());
+
+            byte[] img = imageCompressor.compressImage(dto.getImg().getBytes());
+            usuarioEntity.setImg(img);
+
         } else {
             usuarioEntity.setImg(null);
         }
+
         usuarioEntity.setIdRol(new RolEntity(3));
 
         usuarioRepository.save(usuarioEntity);

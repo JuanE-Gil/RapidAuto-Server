@@ -17,6 +17,9 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    @Autowired
+    private ImageCompressor imageCompressor;
+
     public List<CategoriaEntity> listar_categoria()throws Exception{
         return categoriaRepository.findAll();
     }
@@ -26,7 +29,10 @@ public class CategoriaService {
         CategoriaEntity categoriaEntity = new CategoriaEntity();
 
         categoriaEntity.setDescripcion(dto.getDescripcion());
-        categoriaEntity.setImg(dto.getImg().getBytes());
+
+        byte[] img = imageCompressor.compressImage(dto.getImg().getBytes());
+        categoriaEntity.setImg(img);
+
         categoriaRepository.save(categoriaEntity);
         return categoriaEntity;
     }

@@ -20,6 +20,9 @@ public class Reclamos_SugerenciasService {
     @Autowired
     private Reclamos_SugerenciasRepository reclamosSugerenciasRepository;
 
+    @Autowired
+    private ImageCompressor imageCompressor;
+
     public List<Reclamos_SugerenciasEntity>  Listar()throws Exception {
           return  reclamosSugerenciasRepository.findAll();
     }
@@ -34,7 +37,12 @@ public class Reclamos_SugerenciasService {
         reclamosSugerenciasEntity.setUsuario(new UsuarioEntity(usuario));
         reclamosSugerenciasEntity.setFecha(dateTime);
         reclamosSugerenciasEntity.setMensaje(reclamosSugerenciasDTO.getMensaje());
-        reclamosSugerenciasEntity.setImg(reclamosSugerenciasDTO.getImg().getBytes());
+
+        byte[] img = imageCompressor.compressImage(reclamosSugerenciasDTO.getImg().getBytes());
+
+        reclamosSugerenciasEntity.setImg(img);
+
+
         return this.reclamosSugerenciasRepository.save(reclamosSugerenciasEntity);
     }
 

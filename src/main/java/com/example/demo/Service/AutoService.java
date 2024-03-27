@@ -26,6 +26,9 @@ public class AutoService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    @Autowired
+    private ImageCompressor imageCompressor;
+
     private static final boolean ESTATUS = true;
 
 
@@ -129,11 +132,16 @@ public class AutoService {
             autoEntity.setPais("Perú");
             autoEntity.setDescripcion(dto.getDescripcion());
 
-            // Asignar la dirección de imagen a todas las propiedades de imagen (img1, img2, img3, img4)
-            autoEntity.setImg1(dto.getImg1().getBytes());
-            autoEntity.setImg2(dto.getImg2().getBytes());
-            autoEntity.setImg3(dto.getImg3().getBytes());
-            autoEntity.setImg4(dto.getImg4().getBytes());
+            byte[] img1 = imageCompressor.compressImage(dto.getImg1().getBytes());
+            byte[] img2 = imageCompressor.compressImage(dto.getImg2().getBytes());
+            byte[] img3 = imageCompressor.compressImage(dto.getImg3().getBytes());
+            byte[] img4 = imageCompressor.compressImage(dto.getImg4().getBytes());
+
+            autoEntity.setImg1(img1);
+            autoEntity.setImg2(img2);
+            autoEntity.setImg3(img3);
+            autoEntity.setImg4(img4);
+
             autoEntity.setEstatus(dto.isEstatus());
             autoEntity.setPrecio(dto.getPrecio());
             autoEntity.setIdCategoria(new CategoriaEntity(dto.getIdCategoria()));
