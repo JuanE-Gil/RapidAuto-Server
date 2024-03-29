@@ -18,7 +18,7 @@ public class VentaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_venta;
 
-    @OneToOne(targetEntity = AutoEntity.class)
+    @OneToOne(targetEntity = AutoEntity.class,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_auto")
     private AutoEntity idauto;
 

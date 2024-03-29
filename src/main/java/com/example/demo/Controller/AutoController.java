@@ -2,12 +2,14 @@ package com.example.demo.Controller;
 
 import com.example.demo.DTO.AutoDTO;
 import com.example.demo.DTO.RespuestaDTO;
+import com.example.demo.Model.AutoEntity;
 import com.example.demo.Model.CategoriaEntity;
 import com.example.demo.Model.UsuarioEntity;
 import com.example.demo.Service.AutoService;
 import com.example.demo.Service.UsuarioService;
 import com.example.demo.Service.VentaService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/auto")
 @CrossOrigin
+@Slf4j
 public class AutoController {
 
     @Autowired
@@ -123,9 +126,10 @@ public class AutoController {
     @DeleteMapping("/eliminar")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RespuestaDTO> eliminar(@RequestParam Integer Id) throws  Exception{
-        Integer id_venta2 = Id;
-        Integer id_venta = ventaService.ObteneridVenta(id_venta2);
+        Integer id_venta = ventaService.ObteneridVenta(Id);
         ventaService.eliminarVenta(id_venta);
+        log.info("MENSAJE DE VENTA");
+        log.info("id venta:" + id_venta);
         autoService.eliminarauto(Id);
         RespuestaDTO respuesta = new RespuestaDTO("OK","Eliminado Correctamente", ":)");
         return new ResponseEntity<>(respuesta, HttpStatus.OK);

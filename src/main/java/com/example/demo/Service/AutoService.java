@@ -29,6 +29,9 @@ public class AutoService {
     @Autowired
     private ImageCompressor imageCompressor;
 
+    @Autowired
+    private VentaService ventaService;
+
     private static final boolean ESTATUS = true;
 
 

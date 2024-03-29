@@ -21,9 +21,12 @@ public class VentaService {
         return  ventaRepository.findAll();
     }
 
-    public Optional<VentaEntity> BuscarVentaPorAuto(Integer idauto)throws Exception{
-        return  ventaRepository.findByIdauto(new AutoEntity(idauto));
+    public Optional<VentaEntity> BuscarVentaPorAuto(Integer id) throws Exception {
+        AutoEntity autoEntity = new AutoEntity();
+        autoEntity.setIdAuto(id);
+        return ventaRepository.findByIdauto(autoEntity);
     }
+
 
 
     @Transactional(rollbackOn = Exception.class)
@@ -35,7 +38,9 @@ public class VentaService {
     }
 
     public Integer ObteneridVenta(Integer idauto){
-        VentaEntity ventaEntity = ventaRepository.findByIdauto(new AutoEntity(idauto))
+        AutoEntity autoEntity = new AutoEntity();
+        autoEntity.setIdAuto(idauto);
+        VentaEntity ventaEntity = ventaRepository.findByIdauto(autoEntity)
                 .orElseThrow(() -> new EntityNotFoundException("Venta no Encontrada :" + idauto));
         return ventaEntity.getId_venta();
     }

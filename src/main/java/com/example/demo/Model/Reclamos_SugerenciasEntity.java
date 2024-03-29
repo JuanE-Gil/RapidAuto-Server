@@ -20,7 +20,7 @@ public class Reclamos_SugerenciasEntity {
     private Integer Idre_su;
 
     @ManyToOne(targetEntity = UsuarioEntity.class)
-    @JoinColumn(name = "id_Usuario")
+    @JoinColumn(name = "IdUsuario")
     private UsuarioEntity usuario;
 
     @Column(name = "Fecha")
