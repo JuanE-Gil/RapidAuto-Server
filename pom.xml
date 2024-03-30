@@ -15,7 +15,7 @@
 	<description>Proyecto Final</description>
 	<properties>
 		<java.version>17</java.version>
-		<spring-security.version>6.0.0</spring-security.version>
+		<spring-security.version>6.2.3</spring-security.version>
 	</properties>
 	<dependencies>
 		<dependency>
