@@ -17,6 +17,7 @@ public class ValidationExceptionHandler {
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String, String> handleInvalidArguments(MethodArgumentNotValidException exception) {
         Map<String, String> errors = new HashMap<>(); //Creamos una extension del Map
 
