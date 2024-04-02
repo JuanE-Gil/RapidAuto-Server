@@ -3,6 +3,7 @@ package com.example.demo.Controller;
 
 import com.example.demo.DTO.Posibles_ClienteDTO;
 import com.example.demo.DTO.RespuestaDTO;
+import com.example.demo.Model.AutoEntity;
 import com.example.demo.Model.VentaEntity;
 import com.example.demo.Service.Posibles_ClienteServices;
 import com.example.demo.Service.UsuarioService;
@@ -34,7 +35,7 @@ public class Posible_ClienteController {
         RespuestaDTO respuesta = new RespuestaDTO("OK", "Listado con Éxito", posiblesClienteServices.listar());
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
-    @GetMapping("/listar_por_usuario")
+    @GetMapping("/listar_por_emisor")
     @PreAuthorize("hasRole('USUARIO')")
     public ResponseEntity<RespuestaDTO> listarporVenta(Principal principal)throws Exception{
         Integer userId = usuarioService.obtenerUserIdDesdePrincipal(principal);
@@ -42,9 +43,17 @@ public class Posible_ClienteController {
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
+    @GetMapping("/listar_por_receptor")
+    @PreAuthorize("hasRole('USUARIO')")
+    public ResponseEntity<RespuestaDTO> Listar_mensaje_receptor(Principal principal)throws Exception{
+        Integer userId = usuarioService.obtenerUserIdDesdePrincipal(principal);
+        RespuestaDTO respuesta = new RespuestaDTO("OK", "Listado con Éxito", posiblesClienteServices.listar_Mensaje_del_Receptor(userId));
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    }
+
     @PostMapping("/contactar_usuario")
     @PreAuthorize("hasRole('USUARIO')")
-    public ResponseEntity<RespuestaDTO> contactarVendedor(@ModelAttribute Posibles_ClienteDTO posiblesClienteDTO, Principal principal, @RequestParam int id)throws Exception{
+    public ResponseEntity<RespuestaDTO> contactarVendedor(@ModelAttribute Posibles_ClienteDTO posiblesClienteDTO, Principal principal, @RequestParam AutoEntity id)throws Exception{
         Integer userId = usuarioService.obtenerUserIdDesdePrincipal(principal);
         RespuestaDTO respuesta = new RespuestaDTO("OK","Registrado Correctamente", posiblesClienteServices.registrar(posiblesClienteDTO,id,userId));
         return new ResponseEntity<>(respuesta, HttpStatus.OK);

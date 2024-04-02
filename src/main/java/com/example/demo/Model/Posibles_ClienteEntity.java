@@ -20,9 +20,9 @@ public class Posibles_ClienteEntity {
     @JoinColumn(name = "usario")
     private UsuarioEntity usuario;
 
-
+    @ManyToOne(targetEntity = AutoEntity.class)
     @JoinColumn(name = "auto")
-    private int auto;
+    private AutoEntity auto;
 
     private String descripcion;
 

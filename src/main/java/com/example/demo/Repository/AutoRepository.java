@@ -27,6 +27,8 @@ public interface AutoRepository extends JpaRepository<AutoEntity, Integer> {
 
     List<AutoEntity> findByEstadoAndEstatus(String estado, boolean estatus);
 
+
+
     @Modifying
     @Query("UPDATE AutoEntity e SET e.estatus = :estatus WHERE e.idAuto = :IdAuto")
     void actualizarEstatus(@Param("IdAuto") Integer idAuto, @Param("estatus") boolean estatus);

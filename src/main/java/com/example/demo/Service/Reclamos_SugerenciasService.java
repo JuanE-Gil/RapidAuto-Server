@@ -38,9 +38,14 @@ public class Reclamos_SugerenciasService {
         reclamosSugerenciasEntity.setFecha(dateTime);
         reclamosSugerenciasEntity.setMensaje(reclamosSugerenciasDTO.getMensaje());
 
-        byte[] img = imageCompressor.compressImage(reclamosSugerenciasDTO.getImg().getBytes());
+        if (reclamosSugerenciasDTO.getImg() != null) {
+            //byte[] img = imageCompressor.compressImage(reclamosSugerenciasDTO.getImg().getBytes());
 
-        reclamosSugerenciasEntity.setImg(img);
+            reclamosSugerenciasEntity.setImg(reclamosSugerenciasDTO.getImg().getBytes());
+        }else {
+            reclamosSugerenciasEntity.setImg(null);
+        }
+
 
 
         return this.reclamosSugerenciasRepository.save(reclamosSugerenciasEntity);
