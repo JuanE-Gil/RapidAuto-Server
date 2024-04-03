@@ -13,7 +13,15 @@ import java.io.IOException;
 public class ImageCompressor {
 
     public static byte[] compressImage(byte[] imageData) throws IOException {
+        if (imageData == null) {
+            return null; // Devuelve null si la imagen es nula
+        }
+
         BufferedImage originalImage = ImageIO.read(new ByteArrayInputStream(imageData));
+
+        if (originalImage == null) {
+            return null; // Devuelve null si no se puede leer la imagen
+        }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Thumbnails.of(originalImage)
@@ -23,6 +31,7 @@ public class ImageCompressor {
 
         return outputStream.toByteArray();
     }
+
 }
 
 

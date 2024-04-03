@@ -32,7 +32,7 @@ public class Usuario_ActualizarDTO {
     @Email
     private String correo_electronico;
 
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,20}$", message = "La contraseña debe tener de 4 a 8 caracteres y debe contener números, letras minúsculas y mayúsculas.")
+    @NotBlank
     private String contrasena;
 
     @NotNull(message = "El celular no puede estar vacio")
