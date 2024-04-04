@@ -141,7 +141,17 @@ public class UsuarioService {
             } else {
                 throw new RegistroExistenteException("Correo electrónico en uso");
             }
-            usuarioEntity.setContrasena(passwordEncoder.encode(dto.getContrasena()));
+
+            log.info("Password:" + dto.getContrasena());
+            log.info("Password Busqueda:" + obtenerContrasena(dto.getContrasena()));
+            String contrasenaObtenida = obtenerContrasena(dto.getContrasena());
+            if (contrasenaObtenida != null && contrasenaObtenida.equals(dto.getContrasena())) {
+                usuarioEntity.setContrasena(dto.getContrasena());
+            } else {
+                usuarioEntity.setContrasena(passwordEncoder.encode(dto.getContrasena()));
+            }
+
+
             usuarioEntity.setCelular(dto.getCelular());
             usuarioEntity.setPais("Perú");
             byte[] img = imageCompressor.compressImage(dto.getImg().getBytes());
@@ -193,6 +203,15 @@ public class UsuarioService {
         }
     }
 
+    public String obtenerContrasena(String password) {
+        Optional<UsuarioEntity> usuarioOptional = usuarioRepository.findByContrasena(password);
 
+        if (usuarioOptional.isPresent()) {
+            UsuarioEntity usuario = usuarioOptional.get();
+            return usuario.getContrasena();
+        } else {
+            return "Contraseña incorrecta";
+        }
+    }
 
 }
