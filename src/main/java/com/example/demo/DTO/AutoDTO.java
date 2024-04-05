@@ -25,7 +25,7 @@ public class AutoDTO {
     private String motor;
 
     @NotBlank
-    @Size(min = 3, max = 15)
+    @Size(min = 1, max = 15)
     private String kilometraje;
 
     @NotBlank
