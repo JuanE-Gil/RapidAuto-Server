@@ -8,6 +8,7 @@ import com.example.demo.Model.VentaEntity;
 import com.example.demo.Service.Posibles_ClienteServices;
 import com.example.demo.Service.UsuarioService;
 import com.example.demo.Service.VentaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,7 @@ public class Posible_ClienteController {
 
     @PostMapping("/contactar_usuario")
     @PreAuthorize("hasRole('USUARIO')")
-    public ResponseEntity<RespuestaDTO> contactarVendedor(@ModelAttribute Posibles_ClienteDTO posiblesClienteDTO, Principal principal, @RequestParam AutoEntity id)throws Exception{
+    public ResponseEntity<RespuestaDTO> contactarVendedor(@Valid  @ModelAttribute Posibles_ClienteDTO posiblesClienteDTO, Principal principal, @RequestParam AutoEntity id)throws Exception{
         Integer userId = usuarioService.obtenerUserIdDesdePrincipal(principal);
         RespuestaDTO respuesta = new RespuestaDTO("OK","Registrado Correctamente", posiblesClienteServices.registrar(posiblesClienteDTO,id,userId));
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
