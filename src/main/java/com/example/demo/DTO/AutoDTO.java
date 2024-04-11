@@ -21,11 +21,11 @@ public class AutoDTO {
     private String modelo;
 
     @NotBlank
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 50)
     private String motor;
 
     @NotBlank
-    @Size(min = 3, max = 15)
+    @Size(min = 1, max = 15)
     private String kilometraje;
 
     @NotBlank
