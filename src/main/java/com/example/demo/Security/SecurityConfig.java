@@ -6,6 +6,7 @@ import com.example.demo.Security.Filters.JwtAuthenticationFilter;
 import com.example.demo.Security.Filters.JwtAuthotizationFilter;
 import com.example.demo.Security.JWT.JwUtils;
 import com.example.demo.Service.ObtenerUsuarioRol;
+import com.example.demo.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,10 +36,13 @@ public class SecurityConfig {
     @Autowired
     JwtAuthotizationFilter authotizationFilter;
 
+    @Autowired
+    UsuarioService usuarioService;
+
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationManager authenticationManager) throws Exception {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwUtils);
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwUtils,usuarioService);
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");//Manejar la url del framework
         return httpSecurity
@@ -56,6 +60,7 @@ public class SecurityConfig {
                             auth.requestMatchers("auto/filtro/estado").permitAll();
                             auth.requestMatchers("auto/filtro/marca").permitAll();
                             auth.requestMatchers("auto/busqueda/categoria_description").permitAll();
+                            auth.requestMatchers("reset/password").permitAll();
                             auth.anyRequest().authenticated();
                         })
                 .sessionManagement(session -> {

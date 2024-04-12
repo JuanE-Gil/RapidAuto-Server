@@ -3,9 +3,14 @@ package com.example.demo.Service;
 
 import com.example.demo.DTO.UsuarioDTO;
 import com.example.demo.DTO.Usuario_ActualizarDTO;
+import com.example.demo.Model.Recuperar_Contraseña.PasswordResetToken;
 import com.example.demo.Model.RolEntity;
 import com.example.demo.Model.UsuarioEntity;
+import com.example.demo.Repository.Recuperar_Contraseña.PasswordResetTokenRepository;
 import com.example.demo.Repository.UsuarioRepository;
+import com.example.demo.Service.Compresor.ImageCompressor;
+import com.example.demo.Service.Exception.RegistroExistenteException;
+import com.example.demo.Service.Recuperacion_Contraseña.EmailService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +19,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -30,6 +37,12 @@ public class UsuarioService {
 
     @Autowired
     private RolService rolService;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
 
 
     @Autowired
@@ -203,6 +216,19 @@ public class UsuarioService {
         }
     }
 
+    public Integer BuscarCorreo(String correo){
+        UsuarioEntity usuario = usuarioRepository.findByCorreoElectronico(correo)
+                .orElseThrow(() -> new EntityNotFoundException("Correo no encontrado" + correo));
+        return usuario.getId_usuario();
+    }
+
+    public String BuscarRol(String username){
+        UsuarioEntity usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("Username no encontrado" + username));
+        return usuario.getIdRol().getDescripcion();
+    }
+
+
     public String obtenerContrasena(String password) {
         Optional<UsuarioEntity> usuarioOptional = usuarioRepository.findByContrasena(password);
 
@@ -212,6 +238,21 @@ public class UsuarioService {
         } else {
             return "Contraseña incorrecta";
         }
+    }
+
+
+    public void createPasswordResetTokenForUser(Integer user) {
+        UsuarioEntity usuario = new UsuarioEntity();
+        usuario.setId_usuario(user);
+        String correo = "cybesteam@gmail.com";
+        String token = UUID.randomUUID().toString();
+        PasswordResetToken passwordResetToken = new PasswordResetToken();
+        passwordResetToken.setUsuario(usuario);
+        passwordResetToken.setToken(token);
+        emailService.sendPasswordResetEmail(correo, token);
+        // Establecer la expiración del token (por ejemplo, 1 hora desde ahora)
+        passwordResetToken.setExpiryDate(LocalDateTime.now().plusHours(1));
+        passwordResetTokenRepository.save(passwordResetToken);
     }
 
 }
