@@ -38,8 +38,8 @@ public class UsuarioService {
     @Autowired
     private RolService rolService;
 
-    @Autowired
-    private EmailService emailService;
+    //@Autowired
+   // private EmailService emailService;
 
 //    @Autowired
 //    private PasswordResetTokenRepository passwordResetTokenRepository;
