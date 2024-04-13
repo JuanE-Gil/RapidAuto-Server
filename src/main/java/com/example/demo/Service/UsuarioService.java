@@ -7,6 +7,7 @@ import com.example.demo.Model.RolEntity;
 import com.example.demo.Model.UsuarioEntity;
 import com.example.demo.Repository.UsuarioRepository;
 import com.example.demo.Service.Compresor.ImageCompressor;
+import com.example.demo.Service.Exception.RegistroExistenteException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
