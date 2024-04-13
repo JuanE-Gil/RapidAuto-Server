@@ -21,15 +21,15 @@ public class PasswordController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @PostMapping
-    public ResponseEntity<?> resetPasswordRequest(@RequestParam String email) {
-        Integer user = usuarioService.BuscarCorreo(email);
-        if (user == null) {
-            return ResponseEntity.badRequest().body("Usuario no encontrado.");
-        }
-        usuarioService.createPasswordResetTokenForUser(user);
-
-        // Aquí enviar el correo electrónico con el token...
-        return ResponseEntity.ok("Se ha enviado un correo electrónico con instrucciones para restablecer la contraseña.");
-    }
+//    @PostMapping
+//    public ResponseEntity<?> resetPasswordRequest(@RequestParam String email) {
+//        Integer user = usuarioService.BuscarCorreo(email);
+//        if (user == null) {
+//            return ResponseEntity.badRequest().body("Usuario no encontrado.");
+//        }
+//        usuarioService.createPasswordResetTokenForUser(user);
+//
+//        // Aquí enviar el correo electrónico con el token...
+//        return ResponseEntity.ok("Se ha enviado un correo electrónico con instrucciones para restablecer la contraseña.");
+//    }
 }
