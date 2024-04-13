@@ -1,4 +1,4 @@
-package com.example.demo.Service;
+package com.example.demo.Service.Compresor;
 
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.stereotype.Service;
@@ -14,18 +14,15 @@ public class ImageCompressor {
 
     public static byte[] compressImage(byte[] imageData) throws IOException {
         if (imageData == null) {
-            return null; // Devuelve null si la imagen es nula
+            return null;
         }
-
         BufferedImage originalImage = ImageIO.read(new ByteArrayInputStream(imageData));
-
         if (originalImage == null) {
-            return null; // Devuelve null si no se puede leer la imagen
+            return null;
         }
-
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Thumbnails.of(originalImage)
-                .size(originalImage.getWidth(), originalImage.getHeight()) // Mantener las dimensiones originales
+                .size(originalImage.getWidth(), originalImage.getHeight())
                 .outputFormat("jpg")
                 .toOutputStream(outputStream);
 

@@ -1,7 +1,7 @@
 package com.example.demo.advice;
 
 
-import com.example.demo.Service.RegistroExistenteException;
+import com.example.demo.Service.Exception.RegistroExistenteException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,7 +14,6 @@ import java.util.Map;
 
 @RestControllerAdvice//Le esta diciendo que con esto vamos a captar errores
 public class ValidationExceptionHandler {
-
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

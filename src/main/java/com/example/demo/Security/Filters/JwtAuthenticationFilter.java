@@ -3,6 +3,7 @@ package com.example.demo.Security.Filters;
 import com.example.demo.Model.UsuarioEntity;
 import com.example.demo.Repository.UsuarioRepository;
 import com.example.demo.Security.JWT.JwUtils;
+import com.example.demo.Service.UsuarioService;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.exc.StreamReadException;
@@ -39,11 +40,14 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private JwUtils jwtUtils;
+
+    private UsuarioService usuarioService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     //Al no ser una clase de configuracion de spring de esta forma inyectamos correctamente la clase de jwtUtils
-    public JwtAuthenticationFilter(JwUtils jwtUtils) {
+    public JwtAuthenticationFilter(JwUtils jwtUtils, UsuarioService usuarioService) {
         this.jwtUtils = jwtUtils;
+        this.usuarioService = usuarioService;
     }
 
     //Metodo que verifica al usuario dentro de la base de datos y asigna el token
@@ -82,6 +86,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         httpResponse.put("token", token);
         httpResponse.put("Message", "Autenticacion Correcta");
         httpResponse.put("Username", user.getUsername());
+        String rol = usuarioService.BuscarRol(user.getUsername());
+        httpResponse.put("Rol", rol);
         response.getWriter().write(objectMapper.writeValueAsString(httpResponse));
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

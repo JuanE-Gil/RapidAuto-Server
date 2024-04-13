@@ -4,6 +4,7 @@ package com.example.demo.Service;
 import com.example.demo.DTO.CategoriaDTO;
 import com.example.demo.Model.CategoriaEntity;
 import com.example.demo.Repository.CategoriaRepository;
+import com.example.demo.Service.Compresor.ImageCompressor;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

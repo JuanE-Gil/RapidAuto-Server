@@ -6,6 +6,7 @@ import com.example.demo.Model.CategoriaEntity;
 import com.example.demo.Model.UsuarioEntity;
 import com.example.demo.Repository.AutoRepository;
 import com.example.demo.Repository.CategoriaRepository;
+import com.example.demo.Service.Compresor.ImageCompressor;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
