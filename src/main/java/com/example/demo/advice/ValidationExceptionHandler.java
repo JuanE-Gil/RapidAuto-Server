@@ -1,7 +1,7 @@
 package com.example.demo.advice;
 
 
-import com.example.demo.Service.Exception.RegistroExistenteException;
+import com.example.demo.Service.RegistroExistenteException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
