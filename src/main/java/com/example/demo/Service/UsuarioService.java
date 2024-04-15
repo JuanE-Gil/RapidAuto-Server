@@ -9,7 +9,6 @@ import com.example.demo.Model.UsuarioEntity;
 import com.example.demo.Repository.Recuperar_Contraseña.PasswordResetTokenRepository;
 import com.example.demo.Repository.UsuarioRepository;
 import com.example.demo.Service.Compresor.ImageCompressor;
-import com.example.demo.Service.Exception.RegistroExistenteException;
 import com.example.demo.Service.Recuperacion_Contraseña.EmailService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -41,8 +40,10 @@ public class UsuarioService {
     @Autowired
     private EmailService emailService;
 
-//    @Autowired
-//    private PasswordResetTokenRepository passwordResetTokenRepository;
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
+
 
 
     @Autowired
@@ -241,18 +242,25 @@ public class UsuarioService {
     }
 
 
-//    public void createPasswordResetTokenForUser(Integer user) {
-//        UsuarioEntity usuario = new UsuarioEntity();
-//        usuario.setId_usuario(user);
-//        String correo = "cybesteam@gmail.com";
-//        String token = UUID.randomUUID().toString();
-//        PasswordResetToken passwordResetToken = new PasswordResetToken();
-//        passwordResetToken.setUsuario(usuario);
-//        passwordResetToken.setToken(token);
-//        emailService.sendPasswordResetEmail(correo, token);
-//        // Establecer la expiración del token (por ejemplo, 1 hora desde ahora)
-//        passwordResetToken.setExpiryDate(LocalDateTime.now().plusHours(1));
-//        passwordResetTokenRepository.save(passwordResetToken);
-//    }
+    public String createPasswordResetTokenForUser(Integer user, String correo) {
+        UsuarioEntity usuario = new UsuarioEntity();
+        usuario.setId_usuario(user);
+        String token = UUID.randomUUID().toString();
+        PasswordResetToken passwordResetToken = new PasswordResetToken();
+        passwordResetToken.setUser(usuario);
+        passwordResetToken.setToken(token);
+        emailService.sendPasswordResetEmail(correo, token);
+        // Establecer la expiración del token (por ejemplo, 1 hora desde ahora)
+        passwordResetToken.setExpiryDate(LocalDateTime.now().plusHours(1));
+        passwordResetTokenRepository.save(passwordResetToken);
+        return token;
+    }
+    @Transactional(rollbackOn = Exception.class)
+    public String resetpassword(Integer usuario, String password){
+        usuarioRepository.resetpassword(usuario,password);
+        return "Password Reset Successful";
+    }
+
+
 
 }
