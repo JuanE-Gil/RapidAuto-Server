@@ -1,8 +1,8 @@
-package com.example.demo.Service.Recuperacion_Contraseña;
+package com.example.demo.Service.Recover_password;
 
-import com.example.demo.Model.Recuperar_Contraseña.PasswordResetToken;
+import com.example.demo.Model.Recover_password.PasswordResetToken;
 import com.example.demo.Model.UsuarioEntity;
-import com.example.demo.Repository.Recuperar_Contraseña.PasswordResetTokenRepository;
+import com.example.demo.Repository.Recover_password.PasswordResetTokenRepository;
 import com.example.demo.Service.RegistroExistenteException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

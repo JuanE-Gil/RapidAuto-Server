@@ -1,4 +1,4 @@
-package com.example.demo.Service.Recuperacion_Contraseña;
+package com.example.demo.Service.Recover_password;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

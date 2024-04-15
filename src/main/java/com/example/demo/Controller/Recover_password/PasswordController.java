@@ -1,18 +1,13 @@
-package com.example.demo.Controller.Recuperar_Contraseña;
+package com.example.demo.Controller.Recover_password;
 
 import com.example.demo.DTO.ResetPassword;
-import com.example.demo.Model.Recuperar_Contraseña.PasswordResetToken;
 import com.example.demo.Model.UsuarioEntity;
-import com.example.demo.Repository.UsuarioRepository;
-import com.example.demo.Service.Recuperacion_Contraseña.EmailService;
+import com.example.demo.Service.Recover_password.EmailService;
 import com.example.demo.Service.UsuarioService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/reset/password")

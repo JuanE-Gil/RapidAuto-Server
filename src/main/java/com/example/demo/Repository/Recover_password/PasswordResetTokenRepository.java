@@ -1,6 +1,6 @@
-package com.example.demo.Repository.Recuperar_Contraseña;
+package com.example.demo.Repository.Recover_password;
 
-import com.example.demo.Model.Recuperar_Contraseña.PasswordResetToken;
+import com.example.demo.Model.Recover_password.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

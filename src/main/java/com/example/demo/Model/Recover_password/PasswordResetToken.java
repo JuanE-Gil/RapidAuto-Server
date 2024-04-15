@@ -1,4 +1,4 @@
-package com.example.demo.Model.Recuperar_Contraseña;
+package com.example.demo.Model.Recover_password;
 
 
 import com.example.demo.Model.UsuarioEntity;

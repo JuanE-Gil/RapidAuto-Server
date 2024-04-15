@@ -3,13 +3,13 @@ package com.example.demo.Service;
 
 import com.example.demo.DTO.UsuarioDTO;
 import com.example.demo.DTO.Usuario_ActualizarDTO;
-import com.example.demo.Model.Recuperar_Contraseña.PasswordResetToken;
+import com.example.demo.Model.Recover_password.PasswordResetToken;
 import com.example.demo.Model.RolEntity;
 import com.example.demo.Model.UsuarioEntity;
-import com.example.demo.Repository.Recuperar_Contraseña.PasswordResetTokenRepository;
+import com.example.demo.Repository.Recover_password.PasswordResetTokenRepository;
 import com.example.demo.Repository.UsuarioRepository;
 import com.example.demo.Service.Compresor.ImageCompressor;
-import com.example.demo.Service.Recuperacion_Contraseña.EmailService;
+import com.example.demo.Service.Recover_password.EmailService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
