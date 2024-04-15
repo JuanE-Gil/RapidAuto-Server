@@ -107,10 +107,8 @@ public class UsuarioService {
         usuarioEntity.setPais("Perú");
         usuarioEntity.setEstado("Activo");
         if (dto.getImg() != null) {
-
             byte[] img = imageCompressor.compressImage(dto.getImg().getBytes());
             usuarioEntity.setImg(img);
-
         } else {
             usuarioEntity.setImg(null);
         }
@@ -165,11 +163,12 @@ public class UsuarioService {
             }
             usuarioEntity.setCelular(dto.getCelular());
             usuarioEntity.setPais("Perú");
-            if (dto.getImg() == null){
-                usuarioEntity.setImg(usuarioEntity.getImg());
-            }else {
+
+            if(dto.getImg() != null && !dto.getImg().isEmpty()){
                 byte[] img = imageCompressor.compressImage(dto.getImg().getBytes());
                 usuarioEntity.setImg(img);
+            }else {
+                usuarioEntity.setImg(optional.get().getImg());
             }
             return usuarioEntity;
         }else {
