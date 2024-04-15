@@ -3,6 +3,9 @@ package com.example.demo.Repository;
 import com.example.demo.Model.RolEntity;
 import com.example.demo.Model.UsuarioEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,5 +23,9 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer>
     Optional<UsuarioEntity> findByCorreoElectronico(String correo);
 
     Optional<UsuarioEntity> findByContrasena(String contrasena);
+
+    @Modifying
+    @Query("UPDATE UsuarioEntity e SET e.contrasena = :contraseña WHERE e.id_usuario = :Id")
+    void resetpassword(@Param("Id") Integer Id, @Param("contraseña") String contrasena);
 
 }

@@ -61,6 +61,7 @@ public class SecurityConfig {
                             auth.requestMatchers("auto/filtro/marca").permitAll();
                             auth.requestMatchers("auto/busqueda/categoria_description").permitAll();
                             auth.requestMatchers("reset/password").permitAll();
+                            auth.requestMatchers("reset/password/new").permitAll();
                             auth.anyRequest().authenticated();
                         })
                 .sessionManagement(session -> {
