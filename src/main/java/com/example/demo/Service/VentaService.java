@@ -28,6 +28,13 @@ public class VentaService {
     }
 
 
+    @Transactional(rollbackOn = Exception.class)
+    public String insertEstado(Integer id, String estado)throws Exception{
+        ventaRepository.insertEstado(id,estado);
+        return "DATO INSERTADO EXITOSAMENTE";
+    }
+
+
 
     @Transactional(rollbackOn = Exception.class)
     public void eliminarVenta(Integer id) throws Exception{

@@ -1,6 +1,8 @@
 package com.example.demo.Model;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,6 +36,10 @@ public class VentaEntity {
 
     @Column(name = "fecha_finalizacion")
     private Date fecha_finalizacion;
+
+    @Column(name = "estado")
+    @Size(max = 50)
+    private String estado;
 
     public VentaEntity(Integer id_venta) {
         this.id_venta = id_venta;

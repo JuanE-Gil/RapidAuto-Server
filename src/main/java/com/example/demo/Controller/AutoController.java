@@ -135,4 +135,16 @@ public class AutoController {
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
+    @PutMapping("/vendido")
+    @PreAuthorize("hasRole('USUARIO')")
+    public ResponseEntity<RespuestaDTO> vendido(@RequestParam Integer Id, @RequestParam String estado) throws  Exception{
+        Integer id_venta = ventaService.ObteneridVenta(Id);
+        ventaService.insertEstado(id_venta,estado);
+        log.info("MENSAJE DE VENTA");
+        log.info("id venta:" + id_venta);
+        autoService.eliminar_auto_usuario(Id);
+        RespuestaDTO respuesta = new RespuestaDTO("OK","AUTO VENDIDO CORRECTAMENTE", ":)");
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    }
+
 }

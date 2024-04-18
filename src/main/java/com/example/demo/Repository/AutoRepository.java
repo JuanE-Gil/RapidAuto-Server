@@ -30,7 +30,7 @@ public interface AutoRepository extends JpaRepository<AutoEntity, Integer> {
 
 
     @Modifying
-    @Query("UPDATE AutoEntity e SET e.estatus = :estatus WHERE e.idAuto = :IdAuto")
-    void actualizarEstatus(@Param("IdAuto") Integer idAuto, @Param("estatus") boolean estatus);
+    @Query("UPDATE AutoEntity e SET e.estatus = :estatus WHERE e.idAuto = :id_auto")
+    void actualizarEstatus(@Param("id_auto") Integer idAuto, @Param("estatus") boolean estatus);
 
 }

@@ -64,6 +64,7 @@ public class AutoEntity {
     @Column(name = "estatus")
     private boolean estatus;
 
+
     @ManyToOne(targetEntity = UsuarioEntity.class)
     @JoinColumn(name = "idusuario")
     private UsuarioEntity idusuario;
