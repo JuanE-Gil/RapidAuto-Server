@@ -22,7 +22,6 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-
     @GetMapping("/version")
     public String version()throws Exception{
         String version = "VERSION 5 SPRING BOOT RAKTEAM COMPANY";
@@ -33,7 +32,6 @@ public class UsuarioController {
         RespuestaDTO respuesta = new RespuestaDTO("OK", "El Rol es:", usuarioService.ObtenerRol(principal));
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
-
 
     @GetMapping("/listar_solo_usuarios")
     @PreAuthorize("hasRole('ADMIN')")
@@ -62,6 +60,13 @@ public class UsuarioController {
     public ResponseEntity<RespuestaDTO> BuscarUsuario(Principal principal) throws Exception {
         Integer userId = usuarioService.obtenerUserIdDesdePrincipal(principal);
         RespuestaDTO respuesta = new RespuestaDTO("OK", "Encontrado con Éxito", usuarioService.Buscar(userId));
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    }
+
+    @GetMapping("/buscar_usuario_por_id")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<RespuestaDTO> Buscar_Usuario_por_id(@RequestParam Integer id) throws Exception {
+        RespuestaDTO respuesta = new RespuestaDTO("OK", "Encontrado con Éxito", usuarioService.Buscar(id));
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 

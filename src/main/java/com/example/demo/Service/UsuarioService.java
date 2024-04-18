@@ -43,9 +43,6 @@ public class UsuarioService {
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
 
-
-
-
     @Autowired
     private ImageCompressor imageCompressor;
 
