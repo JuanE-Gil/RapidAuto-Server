@@ -136,16 +136,30 @@ public class AutoService {
             autoEntity.setPais("Perú");
             autoEntity.setDescripcion(dto.getDescripcion());
 
-            byte[] img1 = imageCompressor.compressImage(dto.getImg1().getBytes());
-            byte[] img2 = imageCompressor.compressImage(dto.getImg2().getBytes());
-            byte[] img3 = imageCompressor.compressImage(dto.getImg3().getBytes());
-            byte[] img4 = imageCompressor.compressImage(dto.getImg4().getBytes());
-
-            autoEntity.setImg1(img1);
-            autoEntity.setImg2(img2);
-            autoEntity.setImg3(img3);
-            autoEntity.setImg4(img4);
-
+            if (dto.getImg1() != null && !dto.getImg1().isEmpty()){
+                byte[] img1 = imageCompressor.compressImage(dto.getImg1().getBytes());
+                autoEntity.setImg1(img1);
+            }else {
+                autoEntity.setImg1(optional.get().getImg1());
+            }
+            if (dto.getImg2() != null && !dto.getImg2().isEmpty()){
+                byte[] img2 = imageCompressor.compressImage(dto.getImg2().getBytes());
+                autoEntity.setImg2(img2);
+            }else {
+                autoEntity.setImg2(optional.get().getImg2());
+            }
+            if (dto.getImg3() != null && !dto.getImg3().isEmpty()){
+                byte[] img3 = imageCompressor.compressImage(dto.getImg3().getBytes());
+                autoEntity.setImg3(img3);
+            }else {
+                autoEntity.setImg3(optional.get().getImg3());
+            }
+            if (dto.getImg4() != null && !dto.getImg4().isEmpty()){
+                byte[] img4 = imageCompressor.compressImage(dto.getImg4().getBytes());
+                autoEntity.setImg4(img4);
+            }else{
+                autoEntity.setImg4(optional.get().getImg4());
+            }
             autoEntity.setEstatus(dto.isEstatus());
             autoEntity.setPrecio(dto.getPrecio());
             autoEntity.setIdCategoria(new CategoriaEntity(dto.getIdCategoria()));
