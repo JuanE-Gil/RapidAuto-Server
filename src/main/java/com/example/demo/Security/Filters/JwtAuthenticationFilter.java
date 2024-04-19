@@ -87,9 +87,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         httpResponse.put("Message", "Autenticacion Correcta");
         httpResponse.put("Username", user.getUsername());
         String rol = usuarioService.BuscarRol(user.getUsername());
-        String estado = usuarioService.BuscarEstado(user.getUsername());
+        //String estado = usuarioService.BuscarEstado(user.getUsername());
         httpResponse.put("Rol", rol);
-        httpResponse.put("Estado", estado);
+        //httpResponse.put("Estado", estado);
         response.getWriter().write(objectMapper.writeValueAsString(httpResponse));
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
