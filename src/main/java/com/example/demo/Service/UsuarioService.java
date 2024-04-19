@@ -227,9 +227,9 @@ public class UsuarioService {
     }
 
     public String BuscarEstado(String username){
-        UsuarioEntity usuario = usuarioRepository.findByEstado(username)
-                .orElseThrow(() -> new EntityNotFoundException("Username no encontrado" + username));
-        return usuario.getIdRol().getDescripcion();
+        UsuarioEntity usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("Estado no encontrado" + username));
+        return usuario.getEstado();
     }
 
 
