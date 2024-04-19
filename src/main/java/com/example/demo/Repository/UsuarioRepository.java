@@ -20,6 +20,8 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer>
 
     List<UsuarioEntity> findByIdRol(RolEntity rol);
 
+    Optional<UsuarioEntity> findByEstado(String username);
+
     Optional<UsuarioEntity> findByCorreoElectronico(String correo);
 
     Optional<UsuarioEntity> findByContrasena(String contrasena);

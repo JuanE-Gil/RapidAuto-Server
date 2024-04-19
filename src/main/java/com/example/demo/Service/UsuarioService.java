@@ -226,6 +226,12 @@ public class UsuarioService {
         return usuario.getIdRol().getDescripcion();
     }
 
+    public String BuscarEstado(String username){
+        UsuarioEntity usuario = usuarioRepository.findByEstado(username)
+                .orElseThrow(() -> new EntityNotFoundException("Username no encontrado" + username));
+        return usuario.getIdRol().getDescripcion();
+    }
+
 
     public String obtenerContrasena(String password) {
         Optional<UsuarioEntity> usuarioOptional = usuarioRepository.findByContrasena(password);
