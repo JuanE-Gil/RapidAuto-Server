@@ -26,7 +26,7 @@ public class EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("Recuperación de contraseña");
-        message.setText("Para restablecer su contraseña, haga clic en el siguiente enlace: ENLAZE DEL FRONT AQUI");
+        message.setText("Para restablecer su contraseña, haga clic en el siguiente enlace: https://rapidauto-main.up.railway.app/auth/recuperarContra");
         javaMailSender.send(message);
     }
 
