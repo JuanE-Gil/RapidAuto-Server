@@ -4,7 +4,12 @@ package com.example.demo.Controller;
 import com.example.demo.DTO.RespuestaDTO;
 import com.example.demo.DTO.UsuarioDTO;
 import com.example.demo.DTO.Usuario_ActualizarDTO;
+import com.example.demo.Model.AutoEntity;
+import com.example.demo.Model.UsuarioEntity;
+import com.example.demo.Repository.AutoRepository;
+import com.example.demo.Service.AutoService;
 import com.example.demo.Service.UsuarioService;
+import com.example.demo.Service.VentaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +18,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuario")
@@ -21,6 +28,15 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private AutoService autoService;
+
+    @Autowired
+    private VentaService ventaService;
+
+    @Autowired
+    private AutoRepository autoRepository;
 
     @GetMapping("/version")
     public String version()throws Exception{
@@ -94,14 +110,14 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioService.actualizar_admin(dto,usuario),HttpStatus.OK);
     }
 
-    @DeleteMapping("/eliminar_usuario")
-    @PreAuthorize("hasRole('USUARIO')")
-    public ResponseEntity<RespuestaDTO> eliminar(Principal principal) throws  Exception{
-        Integer userId = usuarioService.obtenerUserIdDesdePrincipal(principal);
-        usuarioService.eliminar(userId);
-        RespuestaDTO respuesta = new RespuestaDTO("OK","Eliminado Correctamente", ":)");
-        return new ResponseEntity<>(respuesta, HttpStatus.OK);
-    }
+//    @DeleteMapping("/eliminar_usuario")
+//    @PreAuthorize("hasRole('USUARIO')")
+//    public ResponseEntity<RespuestaDTO> eliminar(Principal principal) throws  Exception{
+//        Integer userId = usuarioService.obtenerUserIdDesdePrincipal(principal);
+//        usuarioService.eliminar(userId);
+//        RespuestaDTO respuesta = new RespuestaDTO("OK","Eliminado Correctamente", ":)");
+//        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+//    }
 
     @DeleteMapping("/eliminar_admin")
     @PreAuthorize("hasRole('ADMIN')")
@@ -110,5 +126,41 @@ public class UsuarioController {
         RespuestaDTO respuesta = new RespuestaDTO("OK","Eliminado Correctamente", ":)");
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
+
+    @PutMapping("/desactivado_por_usuario")
+    @PreAuthorize("hasRole('USUARIO')")
+    public ResponseEntity<String> desactivar_por_usuario(Principal principal)throws Exception{
+        Integer userId = usuarioService.obtenerUserIdDesdePrincipal(principal);
+        usuarioService.desactivarUsuario(userId);
+        UsuarioEntity usuario = new UsuarioEntity();
+        usuario.setId_usuario(userId);
+        List<AutoEntity> autos = autoRepository.findByIdusuarioAndEstatus(usuario,true);
+        for (AutoEntity auto : autos) {
+            autoService.eliminar_auto_usuario(auto.getIdAuto());
+            Integer id_venta = ventaService.ObteneridVenta(auto.getIdAuto());
+            ventaService.insertEstado(id_venta, "Usuario Desactivado");
+        }
+        return ResponseEntity.ok("USUARIO DESACTIVADO CON EXITO");
+
+    }
+
+    @PutMapping("/desactivado_por_admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> desactivar_por_admin(@RequestParam Integer id)throws Exception{
+        Integer userId = usuarioService.Id_usuario(id);
+        usuarioService.desactivarUsuario(userId);
+        UsuarioEntity usuario = new UsuarioEntity();
+        usuario.setId_usuario(userId);
+        List<AutoEntity> autos = autoRepository.findByIdusuarioAndEstatus(usuario,true);
+        for (AutoEntity auto : autos) {
+            autoService.eliminar_auto_usuario(auto.getIdAuto());
+            Integer id_venta = ventaService.ObteneridVenta(auto.getIdAuto());
+            ventaService.insertEstado(id_venta, "Usuario Desactivado por Administrado");
+        }
+        return ResponseEntity.ok("USUARIO DESACTIVADO CON EXITO");
+
+    }
+
+
 
 }

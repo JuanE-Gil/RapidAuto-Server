@@ -119,6 +119,8 @@ public class AutoController {
     @PutMapping("/eliminar/auto_usuario")
     @PreAuthorize("hasRole('USUARIO')")
     public ResponseEntity<RespuestaDTO> eliminar_auto(@RequestParam Integer id) throws  Exception{
+        Integer id_venta = ventaService.ObteneridVenta(id);
+        ventaService.insertEstado(id_venta,"Auto eliminado por usuario");
         RespuestaDTO respuesta = new RespuestaDTO("OK"," Eliminado Correctamente", autoService.eliminar_auto_usuario(id));
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }

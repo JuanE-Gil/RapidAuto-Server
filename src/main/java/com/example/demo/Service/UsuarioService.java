@@ -252,10 +252,23 @@ public class UsuarioService {
         passwordResetTokenRepository.save(passwordResetToken);
         return token;
     }
+
+    public Integer Id_usuario(Integer id)throws Exception{
+        UsuarioEntity usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+        return usuario.getId_usuario();
+    }
     @Transactional(rollbackOn = Exception.class)
     public String resetpassword(Integer usuario, String password){
         usuarioRepository.resetpassword(usuario,password);
         return "Password Reset Successful";
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public String desactivarUsuario(Integer usuario){
+        String estado_usuario = "Desactivado";
+        usuarioRepository.update_estado(usuario,estado_usuario);
+        return "USUARIO DESACTIVADO CON EXITO";
     }
 
 

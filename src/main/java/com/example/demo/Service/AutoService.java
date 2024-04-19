@@ -188,6 +188,14 @@ public class AutoService {
             autoRepository.delete(optional.get());
         }
     }
+    public AutoEntity obtenerAutosUsuario(UsuarioEntity usuario) {
+        List<AutoEntity> listaAutos = autoRepository.findByIdusuarioAndEstatus(usuario, true);
+        if (!listaAutos.isEmpty()) {
+            return listaAutos.get(0);
+        } else {
+            return null;
+        }
+    }
 
 }
 

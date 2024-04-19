@@ -25,6 +25,11 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer>
     Optional<UsuarioEntity> findByContrasena(String contrasena);
 
     @Modifying
+    @Query("UPDATE UsuarioEntity e SET e.estado = :estado WHERE e.id_usuario = :Id")
+    void update_estado(@Param("Id") Integer Id, @Param("estado") String estado);
+
+
+    @Modifying
     @Query("UPDATE UsuarioEntity e SET e.contrasena = :contraseña WHERE e.id_usuario = :Id")
     void resetpassword(@Param("Id") Integer Id, @Param("contraseña") String contrasena);
 
